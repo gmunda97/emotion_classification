@@ -1,6 +1,8 @@
 import pandas as pd
 import nltk
 import string 
+import argparse
+import os
 from typing import List
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.svm import SVC
@@ -60,10 +62,24 @@ class SVMClassifier:
     
 
 if __name__ == '__main__':
+    parser = argparse.ArgumentParser(description='Train a baseline SVM classifier')
+    parser.add_argument('train_dataset_path', type=str, help='Path to the training dataset')
+    parser.add_argument('test_dataset_path', type=str, help='Path to the test dataset')
+    args = parser.parse_args()
 
-    train_data = pd.read_csv('Datasets/data_train.csv')
-    val_data = pd.read_csv('Datasets/data_val.csv')
-    test_data = pd.read_csv('Datasets/data_test.csv')
+    train_dataset_path = args.train_dataset_path
+    if not os.path.exists(train_dataset_path):
+        print(f"Training dataset file does not exist: {train_dataset_path}")
+        exit()
+
+    test_dataset_path = args.test_dataset_path
+    if not os.path.exists(test_dataset_path):
+        print(f"Test dataset file does not exist: {test_dataset_path}")
+        exit()
+
+    # here I can decide which test dataset to use (test or validation)
+    train_data = pd.read_csv(train_dataset_path)
+    test_data = pd.read_csv(test_dataset_path)
 
     # instantiate and train the SVMClassifier
     svm_classifier = SVMClassifier(train_data)
