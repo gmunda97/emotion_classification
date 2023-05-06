@@ -1,6 +1,3 @@
 /.DS_Store
-jupyter_notebooks/svm_classifier.pkl
-jupyter_notebooks/trained_fc_model.pt
-jupyter_notebooks/trained_fc_model_preprocessed.pt
-jupyter_notebooks/best_model.pt
 jupyter_notebooks/LSTM_from_scratch.ipynb
+trained_models
