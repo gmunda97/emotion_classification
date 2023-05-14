@@ -17,25 +17,20 @@ nltk.download('stopwords')
 class SVMClassifier:
     '''
     This classifier is trained using a Support Vector Machine (SVM)
-    The data are preprocessed using lemmatization, removing stopwords and punctuation
+    The data are preprocessed using lemmatization, stopwords and punctuation
+    are removed. The features are extracted using TF-IDF.
     '''
 
     def __init__(self, training_examples: List):
-        # convert the data into lists
         X = training_examples["Text"].tolist()
         y = training_examples["Emotion"].tolist()
 
-        # perform lemmatization on the input data
         X = self._lemmatize(X)
-
-        # remove stopwords and punctuation
         X = self._remove_stopwords_and_punctuation(X)
 
-        # convert the text into numerical values using TfidfVectorizer
         self.vectorizer = TfidfVectorizer()
         X_transformed = self.vectorizer.fit_transform(X)
 
-        # create a classifier and train it on the data
         self.classifier = SVC(kernel='linear', probability=True)
         self.classifier.fit(X_transformed, y)
 
@@ -46,18 +41,15 @@ class SVMClassifier:
     def _remove_stopwords_and_punctuation(self, sentences):
         stopwords_set = set(stopwords.words('english'))
         punctuation_set = set(string.punctuation)
-        return [' '.join([word.lower() for word in word_tokenize(sentence) if (word.lower() not in stopwords_set and word.lower() not in punctuation_set)]) for sentence in sentences]
+        return [' '.join([word.lower() for word in word_tokenize(sentence) if 
+                          (word.lower() not in stopwords_set and word.lower() not in punctuation_set)]) 
+                          for sentence in sentences]
 
     def classify(self, text):
-        # perform lemmatization on the input text
         text = self._lemmatize([text])[0]
-
-        # remove stopwords and punctuation
         text = self._remove_stopwords_and_punctuation([text])[0]
-
-        # Vectorizing the text using the same vectorizer
         vectorized_text = self.vectorizer.transform([text])
-        # Classifying the vectorized text:
+
         return self.classifier.predict(vectorized_text)
     
 
