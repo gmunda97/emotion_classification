@@ -3,6 +3,7 @@ import nltk
 import string 
 import argparse
 import os
+import pickle
 from typing import List
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.svm import SVC
@@ -86,3 +87,7 @@ if __name__ == '__main__':
     print(f"Accuracy score: {accuracy:.4f}")
     print(f"F1 score: {f1:.4f}")
     print(f"Matthews correlation coefficient: {matthews:.4f}")
+
+    # save the model
+    with open('svm_classifier.pkl', 'wb') as file:
+        pickle.dump(svm_classifier, file)
